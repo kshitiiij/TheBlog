@@ -1,4 +1,4 @@
-import {useParams,useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import useFetch from './useFetch';
 
 
@@ -6,17 +6,9 @@ const BlogDetail = () => {
 
     //takes the parameter from the route and put the value in id;
     const {id} = useParams();
-    const {blogs:blog,pending,error} = useFetch('http://localhost:8000/blogs/'+id);
-    const history = useHistory();
+    const {blogs,pending,error} = useFetch(`https://kshitiiij.github.io/TheBlog-db/db.json`);
+    const blog=blogs[id-1];
 
-    const handleDelete = () => {
-        fetch('http://localhost:8000/blogs/'+blog.id, {
-            method: 'DELETE',
-        }).then(()=> {
-            console.log("blog deleted");
-            history.push('/');
-        });
-    }
 
     return (
         <div className="blog-details">
@@ -27,7 +19,6 @@ const BlogDetail = () => {
                         <h2>{blog.title}</h2>
                         <p>written by {blog.author}</p>
                         <div>{blog.body}</div>
-                        <button onClick={handleDelete}>Delete</button>
 
                     </article>
                 )

@@ -1,9 +1,10 @@
 // Custom Hook
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const useFetch = (url) => {
 
-    const [blogs,setBlogs] = useState(null);
+    const [blogs,setBlogs] = useState([]);
     const [pending,setPending] = useState(true);
     const [error,setError] = useState(null);
 
@@ -13,33 +14,24 @@ const useFetch = (url) => {
             // it can be associated as a second parameter in the fetch method.
             const abortCont = new AbortController();
 
-            setTimeout( () => {
-                fetch(url , {signal: abortCont.signal})
-                .then(res => {
-                    if(!res.ok) {
-                        throw Error("could not fetch the resource");
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    setBlogs(data);
+            axios.get(url)
+            .then((res) => {
+                setBlogs(res.data.blogs);
+                setPending(false);
+                setError(null);
+            })
+            .catch( err => {
+                //the abort method throws an error and we do not need to update the state after catching
+                // abort error
+                if(err.name === 'AbortError') {
+                    console.log("fetch aborted");
+                }
+                else {
+                    setError(err.message);
                     setPending(false);
-                    setError(null);
-                })
-                .catch( err => {
-                    //the abort method throws an error and we do not need to update the state after catching
-                    // abort error
-                    if(err.name === 'AbortError') {
-                        console.log("fetch aborted");
-                    }
-                    else {
-                        setError(err.message);
-                        setPending(false);
-                        setBlogs(null);
-                    }
-                    
-                });
-            },500);
+                    setBlogs(null);
+                }
+            });
 
             //this method is fired upon completing the fetch
             return () => abortCont.abort();

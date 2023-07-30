@@ -12,7 +12,7 @@ const Create = () => {
         e.preventDefault();
         const blog = {title,body,author};
 
-        fetch('http://localhost:8000/blogs', {
+        fetch("https://kshitiiij.github.io/TheBlog-db/db.json", {
             method: 'POST',
             headers: {"Content-Type" : "application/json"} ,
             body : JSON.stringify(blog)
