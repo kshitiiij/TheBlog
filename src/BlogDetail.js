@@ -1,21 +1,20 @@
 import {useParams,useHistory} from 'react-router-dom';
 import useFetch from './useFetch';
+import axios from "axios";
 
 
 const BlogDetail = () => {
 
-    //takes the parameter from the route and put the value in id;
     const {id} = useParams();
-    const {blogs:blog,pending,error} = useFetch('http://localhost:8000/blogs/'+id);
+    const {blogs:blog,pending,error} = useFetch('https://theblog.up.railway.app/blogs/getone/'+id);
     const history = useHistory();
 
     const handleDelete = () => {
-        fetch('http://localhost:8000/blogs/'+blog.id, {
-            method: 'DELETE',
-        }).then(()=> {
-            console.log("blog deleted");
-            history.push('/');
-        });
+        axios.delete(`https://theblog.up.railway.app/blogs/delete/${id}`)
+        .then( res => {
+            console.log("blog deleted!!");
+            history.push("/");
+        })
     }
 
     return (

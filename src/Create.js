@@ -1,5 +1,7 @@
 import {useState} from "react";
 import {useHistory} from 'react-router-dom';
+import axios from 'axios';
+
 const Create = () => {
 
     const [title,setTitle] = useState('');
@@ -8,20 +10,12 @@ const Create = () => {
     const history = useHistory();
 
     const handleSubmit = (e) => {
-        //the page will refresh after hitting the button , this will prevent it from refreshing
         e.preventDefault();
         const blog = {title,body,author};
-
-        fetch('http://localhost:8000/blogs', {
-            method: 'POST',
-            headers: {"Content-Type" : "application/json"} ,
-            body : JSON.stringify(blog)
-        }).then(() => {
-            console.log("new blog added")
-            //history keep the path history of the user and can be used as a number to go forward and backward
-            //history.go(-1);
-            //any path can also be directed using push method by passing the route.
-            history.push('/');
+        axios.post("https://theblog.up.railway.app/blogs/post",blog)
+        .then((res) => {
+            console.log("new blog added!!");
+            history.push("/");
         });
     }
 

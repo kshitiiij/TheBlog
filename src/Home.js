@@ -4,7 +4,7 @@ import useFetch from './useFetch';
 
 const Home = () => {
 
-    const {blogs,pending,error} = useFetch('http://localhost:8000/blogs');
+    const {blogs,pending,error} = useFetch('https://theblog.up.railway.app/blogs/getall');
 
     return (
         <div className="Home">

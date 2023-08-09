@@ -1,5 +1,6 @@
 // Custom Hook
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const useFetch = (url) => {
 
@@ -8,27 +9,14 @@ const useFetch = (url) => {
     const [error,setError] = useState(null);
 
         useEffect(() => {
-
-            // abort controller is used to stop the fetch and update the state when the component is unmounted
-            // it can be associated as a second parameter in the fetch method.
             const abortCont = new AbortController();
 
-            setTimeout( () => {
-                fetch(url , {signal: abortCont.signal})
-                .then(res => {
-                    if(!res.ok) {
-                        throw Error("could not fetch the resource");
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    setBlogs(data);
+                axios.get(url , {signal: abortCont.signal})
+                .then ((res) => {
+                    setBlogs(res.data);
                     setPending(false);
                     setError(null);
-                })
-                .catch( err => {
-                    //the abort method throws an error and we do not need to update the state after catching
-                    // abort error
+                }).catch(err => {
                     if(err.name === 'AbortError') {
                         console.log("fetch aborted");
                     }
@@ -37,9 +25,7 @@ const useFetch = (url) => {
                         setPending(false);
                         setBlogs(null);
                     }
-                    
                 });
-            },500);
 
             //this method is fired upon completing the fetch
             return () => abortCont.abort();
