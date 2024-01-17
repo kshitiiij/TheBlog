@@ -6,11 +6,11 @@ import axios from "axios";
 const BlogDetail = () => {
 
     const {id} = useParams();
-    const {blogs:blog,pending,error} = useFetch('https://theblog.up.railway.app/blogs/getone/'+id);
+    const {blogs:blog,pending,error} = useFetch('https://theblog-nfzt.onrender.com/blogs/getone/'+id);
     const history = useHistory();
 
     const handleDelete = () => {
-        axios.delete(`https://theblog.up.railway.app/blogs/delete/${id}`)
+        axios.delete(`https://theblog-nfzt.onrender.com/blogs/delete/${id}`)
         .then( res => {
             console.log("blog deleted!!");
             history.push("/");

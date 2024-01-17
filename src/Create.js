@@ -12,7 +12,7 @@ const Create = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const blog = {title,body,author};
-        axios.post("https://theblog.up.railway.app/blogs/post",blog)
+        axios.post("https://theblog-nfzt.onrender.com/blogs/post",blog)
         .then((res) => {
             console.log("new blog added!!");
             history.push("/");
